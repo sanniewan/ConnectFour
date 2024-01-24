@@ -20,7 +20,7 @@ public class Client {
             }
             /**
              * Note - the above structure is a try/catch, which is something
-             * we've included to help deal with the IllegalArgumentExceptions
+             * we've included to help deal with the IllegalArgumentExceptionsdkfkdfj
              * in your abstract strategy game!
              * We want to remind you that try/catch is a forbidden feature in 123,
              * so you SHOULD NOT INCLUDE IT in any code you submit!
