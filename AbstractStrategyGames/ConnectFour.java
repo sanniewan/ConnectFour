@@ -1,28 +1,24 @@
-// Sannie Wan
-// CSE 123
-// C1: Abstract Strategy Games
-//
-// A class to represent a game of connect four that implements the 
-// AbstractStrategyGame interface.
-
 import java.util.*;
 
 public class ConnectFour implements AbstractStrategyGame {
     private char[][] board;
-    private boolean isXTurn;
+    private boolean isPlayerOneTurn;
     private int winner;
+    private char PLAYER_1_SYMBOL = 'X';
+    private char PLAYER_2_SYMBOL = 'O';
 
     // Constructs a new Connect four game.
     public ConnectFour() {
         // 7 columns x 6 rows
         board = new char[6][7];
-        isXTurn = true;
+        isPlayerOneTurn = true;
         winner = -1;
 
         populateNewBoard();
     }
 
-    public void populateNewBoard() {
+    // Fills the new board with empty values
+    private void populateNewBoard() {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 board[i][j] = '-';
@@ -47,21 +43,20 @@ public class ConnectFour implements AbstractStrategyGame {
     // 1 (X), 2 if player 2 (O), 0 if a tie occurred,
     // and -1 if the game is not over.
     private void getWinner(int row, int col, char player) {
+        // Check for a winner
         if (checkRow(row, col) ||
                 checkColumn(row, col) ||
                 checkDiagonalOne(row, col) ||
                 checkDiagonalTwo(row, col)) {
-            this.winner = isXTurn ? 1 : 2;
-        }
-
-        // Check for a tie
-        if (checkTie()) {
+            this.winner = isPlayerOneTurn ? 1 : 2;
+        } else if (checkTie()) { // Check for a tie
             this.winner = 0;
         }
-        
     }
 
-    public boolean checkTie() {
+    // Checks whether or not there is a tie; i.e. there are no empty values in the
+    // grid.
+    private boolean checkTie() {
         boolean tie = true;
         for (int i = 0; i < board[0].length; i++) {
             if (board[0][i] == '-') {
@@ -78,37 +73,39 @@ public class ConnectFour implements AbstractStrategyGame {
         if (isGameOver()) {
             return -1;
         }
-        return isXTurn ? 1 : 2;
+        return isPlayerOneTurn ? 1 : 2;
     }
 
-    // Given the input, places an X or an O where
-    // the player specifies.
+    // Given the input, places an piece at the column where the player specifies.
+    // Determines the row by looking at the lowest row that is empty.
     // Throws an IllegalArgumentException if the position is
     // invalid, whether that be out of bounds or already occupied.
     // Board bounds are [0, 2] for both rows and cols.
     public void makeMove(Scanner input) {
-        char currPlayer = isXTurn ? 'X' : 'O';
+        char currPlayer = isPlayerOneTurn ? PLAYER_1_SYMBOL : PLAYER_2_SYMBOL;
 
         System.out.print("Column? ");
         int col = input.nextInt();
+
+        makeMove(col, currPlayer);
+        isPlayerOneTurn = !isPlayerOneTurn;
+    }
+
+    // Private helper method for makeMove.
+    // Given a column, as well as player index,
+    // calculates the row number and places an X or an O in that row and col.
+    // Throws an IllegalArgumentException if the row and col is
+    // invalid, whether that be out of bounds or fully occupied.
+    // Board bounds are [0, 5] for rows and [0, 6] for cols.
+    private void makeMove(int col, char player) {
+
+        if (col < 0 || col >= board[0].length) {
+            throw new IllegalArgumentException("Invalid board position: " + col);
+        }
+        
         int row = findRowFromCol(col);
 
-        makeMove(row, col, currPlayer);
-        isXTurn = !isXTurn;
-    }
-
-    public int findRowFromCol(int col) {
-        for (int i = board.length - 1; i >= 0; i--) {
-            if (board[i][col] == '-') {
-                return i;
-            }
-        }
-        return 0;
-    }
-
-    private void makeMove(int row, int col, char player) {
-        if (row < 0 || row >= board.length ||
-                col < 0 || col >= board[0].length) {
+        if (row < 0 || row >= board.length) {
             throw new IllegalArgumentException("Invalid board position: " + row + "," + col);
         }
 
@@ -120,9 +117,27 @@ public class ConnectFour implements AbstractStrategyGame {
         getWinner(row, col, player); // checks everything
     }
 
+    // Private helper method for makeMove.
+    // Finds and returns the row closest to the bottom that is empty based on given
+    // column. If all rows are occupied, return -1 and there will be an error.
+    private int findRowFromCol(int col) {
+        for (int i = board.length - 1; i >= 0; i--) {
+            if (board[i][col] == '-') {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     // Returns a String containing instructions to play the game.
     public String instructions() {
         String result = "";
+        result += "Connect Four: A duo player strategy game.\n";
+        result += "Two players take turns dropping their respective\n";
+        result += "tokens into the 7 x 6 standing grid  [width x height],\n";
+        result += "trying to connect four of their tokens horizontally,\n";
+        result += "vertically, or diagonally. If the board is full and there\n";
+        result += "is no winner, then there is a tie.\n";
         return result;
     }
 
@@ -138,8 +153,9 @@ public class ConnectFour implements AbstractStrategyGame {
         return result;
     }
 
-    // Checks the horizontal axis of a token for a connect four.
-    public boolean checkRow(int row, int col) {
+    // Returns whether or not the horizontal axis of a token contains a connect
+    // four.
+    private boolean checkRow(int row, int col) {
         int connections = 1;
         char target = board[row][col];
 
@@ -160,8 +176,8 @@ public class ConnectFour implements AbstractStrategyGame {
         return connections == 4;
     }
 
-    // Checks the vertical axis of a token for a connect four.
-    public boolean checkColumn(int row, int col) {
+    // Returns whether or not the vertical axis of a token contains a connect four.
+    private boolean checkColumn(int row, int col) {
         int connections = 1;
         char target = board[row][col];
 
@@ -182,13 +198,14 @@ public class ConnectFour implements AbstractStrategyGame {
         return connections == 4;
     }
 
-    // Checks the top-left to bottom-right diagonal of a token for a connect four.
-    public boolean checkDiagonalOne(int row, int col) {
+    // Returns whether or not the top-left to bottom-right diagonal of a
+    // token contains a connect four.
+    private boolean checkDiagonalOne(int row, int col) {
         int connections = 1;
         char target = board[row][col];
 
         // check above : row - i, col - i
-        for (int i = 1; (row - i >= 0) 
+        for (int i = 1; (row - i >= 0)
                 && (col - i >= 0)
                 && (board[row - i][col - i] == target)
                 && (connections < 4); i++) {
@@ -196,7 +213,7 @@ public class ConnectFour implements AbstractStrategyGame {
         }
 
         // check below : row + i, col + i
-        for (int i = 1; (row + i < board.length) 
+        for (int i = 1; (row + i < board.length)
                 && (col + i < board[0].length)
                 && (board[row + i][col + i] == target)
                 && (connections < 4); i++) {
@@ -205,13 +222,14 @@ public class ConnectFour implements AbstractStrategyGame {
         return connections == 4;
     }
 
-    // Checks the top-right to bottom-left diagonal of a token for a connect four.
-    public boolean checkDiagonalTwo(int row, int col) {
+    // Returns whether or not the top-right to bottom-left diagonal of a
+    // token contains a connect four.
+    private boolean checkDiagonalTwo(int row, int col) {
         int connections = 1;
         char target = board[row][col];
 
         // check above : row + i, col - i
-        for (int i = 1; (row + i < board.length) 
+        for (int i = 1; (row + i < board.length)
                 && (col - i >= 0)
                 && (board[row + i][col - i] == target)
                 && (connections < 4); i++) {
@@ -219,40 +237,14 @@ public class ConnectFour implements AbstractStrategyGame {
         }
 
         // check below : row - i, col + i
-        for (int i = 1; (row - i >= 0) 
+        for (int i = 1; (row - i >= 0)
                 && (col + i < board[0].length)
                 && (board[row - i][col + i] == target)
                 && (connections < 4); i++) {
             connections += 1;
         }
         return connections == 4;
+
     }
 
 }
-
-/*
- * int i = 1;
- * int connections = 1;
- * int target = board[row][col];
- * boolean leftEdgeCheck = col - i >= 0;
- * boolean rightEdgeCheck = col + i + 1 < board[0].length;
- * 
- * while ((leftEdgeCheck || rightEdgeCheck) && connections < 4) {
- * if (board[row][col + i] == target && rightEdgeCheck) {
- * connections += 1;
- * i += 1;
- * rightEdgeCheck = col + i + 1 < board[0].length;
- * } else {
- * rightEdgeCheck = false;
- * }
- * 
- * if (board[row][col - i] == target && leftEdgeCheck) {
- * connections += 1;
- * i += 1;
- * leftEdgeCheck = col - i >= 0;
- * } else {
- * leftEdgeCheck = false;
- * }
- * }
- * return connections == 4;
- */
