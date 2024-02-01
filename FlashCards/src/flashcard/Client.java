@@ -7,24 +7,27 @@ import java.awt.*;
 import java.util.List;
 
 public class Client {
+    private static boolean buttonClicked = false;
 
     public static void main(String[] args) {
 
         AbstractProblemBank bank = new JapaneseProblemBank(5);
         GradingSheet grade = new GradingSheet();
-        JFrame jFrame = new JFrame("Test on ...");
         for (int i = 0; i < 10; ++i) {
+            buttonClicked = false;
             AbstractProblem problem = bank.generate();
             int problemNumber = i + 1;
             System.out.printf("%d. ", problemNumber);
             System.out.println(problem);
-            present(jFrame, problemNumber, problem);
+            present(problemNumber, problem);
+            waitForButtonClick();
             grade.record(problem);
         }
         System.out.println(grade);
     }
 
-    private static void present(JFrame frame, int problemNumber, AbstractProblem problem) {
+    private static void present(int problemNumber, AbstractProblem problem) {
+        JFrame frame = new JFrame("Test on ...");
         JPanel panel = new JPanel(new GridBagLayout());
 
         JLabel label = new JLabel(String.format("%d. %s", problemNumber, problem.prompt()));
@@ -39,6 +42,16 @@ public class Client {
         gbc.gridy = 0;
         gbc.gridheight = 2;
         panel.add(label, gbc);
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(e -> {
+            synchronized (Client.class) {
+                buttonClicked = true;
+                Client.class.notifyAll();
+            }
+        });
+        gbc.gridx = 1;
+        panel.add(submitButton, gbc);
+
         for (int i = 0; i < choices.size(); ++i) {
             ChoiceButton button = createButton(choices.get(i));
             gbc.gridx = i % 2;
@@ -57,5 +70,17 @@ public class Client {
     private static ChoiceButton createButton(BasicChoice choice) {
         // Create a JButton
         return new ChoiceButton(choice);
+    }
+
+    private static void waitForButtonClick() {
+        synchronized (Client.class) {
+            while (!buttonClicked) {
+                try {
+                    Client.class.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
     }
 }

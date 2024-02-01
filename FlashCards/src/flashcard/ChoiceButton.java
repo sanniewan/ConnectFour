@@ -15,7 +15,10 @@ public class ChoiceButton {
         button.setName(choice.label());
 
         // Add an ActionListener to the button
-        button.addActionListener(e -> choice.check());
+        button.addActionListener(e -> {
+            choice.check();
+            button.setBackground(Color.BLUE);
+        });
     }
 
     public BasicChoice choice() {
