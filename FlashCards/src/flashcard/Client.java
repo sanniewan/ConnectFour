@@ -11,13 +11,11 @@ public class Client {
 
         AbstractProblemBank bank = new JapaneseProblemBank();
         GradingSheet grade = new GradingSheet();
-        for (int i = 0; i < 10; ++i) {
+        for (int i = 0; i < 3; ++i) {
             AbstractProblem problem = bank.generate();
             System.out.println(problem);
-            AbstractAnswer answer = problem.answer();
-            Score score = answer.verify(console);
-            System.out.println(score);
-            grade.record(problem, score);
+            String choice = console.next();
+            grade.record(problem, choice);
         }
         System.out.println(grade);
     }
