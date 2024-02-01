@@ -20,8 +20,9 @@ public class JapaneseProblemBank implements AbstractProblemBank {
     private static final Random random = new Random();
     private static final Map<Long, JapaneseAlphabet> alphabetIdMap = new HashMap<>();
     private static final List<JapaneseAlphabet> alphabets = new ArrayList<>();
+    private int choiceSize;
 
-    public JapaneseProblemBank() {
+    public JapaneseProblemBank(int distractors) {
         super();
         String[] resources = {"flashcard/japanese/resources/hiragana.txt", "flashcard/japanese/resources/katakana.txt"};
         for (String res : resources) {
@@ -35,6 +36,7 @@ public class JapaneseProblemBank implements AbstractProblemBank {
         }
 
         System.out.println(alphabets);
+        this.choiceSize = distractors + 1;
     }
 
     private static List<String> loadResource(String resourceName) {
@@ -76,7 +78,7 @@ public class JapaneseProblemBank implements AbstractProblemBank {
     }
 
     private BasicProblem generate(ProblemType type) {
-        List<JapaneseAlphabet> pick = getRandomN(this.alphabets, 4);
+        List<JapaneseAlphabet> pick = getRandomN(this.alphabets, choiceSize);
         String prompt = generatePrompt(pick.get(0), type);
         List<BasicChoice> choices = generateChoice(pick, type);
 

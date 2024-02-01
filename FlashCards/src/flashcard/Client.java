@@ -9,7 +9,7 @@ public class Client {
     public static void main(String[] args) {
         Scanner console = new Scanner(System.in);
 
-        AbstractProblemBank bank = new JapaneseProblemBank();
+        AbstractProblemBank bank = new JapaneseProblemBank(5);
         GradingSheet grade = new GradingSheet();
         for (int i = 0; i < 10; ++i) {
             AbstractProblem problem = bank.generate();
