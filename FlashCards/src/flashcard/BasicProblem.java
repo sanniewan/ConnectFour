@@ -25,11 +25,21 @@ public class BasicProblem implements AbstractProblem {
     }
 
     @Override
+    public String prompt() {
+        return prompt;
+    }
+
+    @Override
+    public List<BasicChoice> choices() {
+        return choices;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%s (score %d)", prompt, score())).append("\n");
         for (BasicChoice choice : choices) {
-            sb.append(choice.label()).append("\t").append(choice.description()).append("\n");
+            sb.append(choice).append("\n");
         }
         return sb.toString();
     }
