@@ -13,6 +13,7 @@ public class Client {
         GradingSheet grade = new GradingSheet();
         for (int i = 0; i < 10; ++i) {
             AbstractProblem problem = bank.generate();
+            System.out.printf("%d. ", i + 1);
             System.out.println(problem);
             String choice = console.next();
             grade.record(problem, choice);
