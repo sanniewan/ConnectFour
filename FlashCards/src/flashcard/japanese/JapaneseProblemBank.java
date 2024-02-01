@@ -27,7 +27,7 @@ public class JapaneseProblemBank implements AbstractProblemBank {
                 String[] frags = element.split("\t");
                 JapaneseAlphabet alphabet = new JapaneseAlphabet(Long.valueOf(frags[0]), frags[1], frags[2],
                         frags[3]);
-                alphabets.put(alphabet.id, alphabet);
+                alphabets.put(alphabet.id(), alphabet);
             }
         }
         System.out.println(alphabets);
@@ -50,7 +50,10 @@ public class JapaneseProblemBank implements AbstractProblemBank {
     }
 
     public AbstractProblem generate() {
+        JapaneseProblem problem = new JapaneseProblem() {
 
-        return null;
+        };
+
+        return problem;
     }
 }
