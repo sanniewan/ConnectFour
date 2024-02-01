@@ -4,10 +4,8 @@ import flashcard.japanese.JapaneseProblemBank;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.*;
 import java.util.List;
+import java.util.Scanner;
 
 public class Client {
 
@@ -31,6 +29,7 @@ public class Client {
 
     private static void present(JFrame frame, int problemNumber, AbstractProblem problem) {
         JLabel label = new JLabel(String.format("%d. %s", problemNumber, problem.prompt()));
+        label.setFont(new Font("Arial", Font.BOLD, 20));
         // Set layout manager (GridLayout with 1 row and 5 columns)
         List<BasicChoice> choices = problem.choices();
         frame.setLayout(new GridLayout(choices.size(), 1));

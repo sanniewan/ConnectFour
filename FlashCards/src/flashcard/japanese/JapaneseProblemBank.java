@@ -97,10 +97,11 @@ public class JapaneseProblemBank implements AbstractProblemBank {
     public String generatePrompt(JapaneseAlphabet alphabet, ProblemType type) {
         switch (type) {
             case SPELL -> {
-                return String.format("Which of the following sounds like '%s'", alphabet.romanPronounce());
+                return String.format("Which of the following sounds like '%s'?",
+                        alphabet.romanPronounce());
             }
             case PRONOUNCE -> {
-                return String.format("How to pronounce %s", alphabet.japaneseChar());
+                return String.format("How to pronounce %s?", alphabet.japaneseChar());
             }
             default -> {
                 return "";
