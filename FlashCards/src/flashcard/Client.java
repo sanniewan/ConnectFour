@@ -5,12 +5,10 @@ import flashcard.japanese.JapaneseProblemBank;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.Scanner;
 
 public class Client {
 
     public static void main(String[] args) {
-        Scanner console = new Scanner(System.in);
 
         AbstractProblemBank bank = new JapaneseProblemBank(5);
         GradingSheet grade = new GradingSheet();
@@ -21,26 +19,36 @@ public class Client {
             System.out.printf("%d. ", problemNumber);
             System.out.println(problem);
             present(jFrame, problemNumber, problem);
-            String choice = console.next();
-            grade.record(problem, choice);
+            grade.record(problem);
         }
         System.out.println(grade);
     }
 
     private static void present(JFrame frame, int problemNumber, AbstractProblem problem) {
+        JPanel panel = new JPanel(new GridBagLayout());
+
         JLabel label = new JLabel(String.format("%d. %s", problemNumber, problem.prompt()));
         label.setFont(new Font("Arial", Font.BOLD, 20));
-        // Set layout manager (GridLayout with 1 row and 5 columns)
-        List<BasicChoice> choices = problem.choices();
-        frame.setLayout(new GridLayout(choices.size(), 1));
-        frame.add(label);
 
+        List<BasicChoice> choices = problem.choices();
         // Add the button to the content pane of the JFrame
-        for (BasicChoice choice : choices) {
-            ChoiceButton button = createButton(choice);
-            frame.add(button.button());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        panel.add(label, gbc);
+        for (int i = 0; i < choices.size(); ++i) {
+            ChoiceButton button = createButton(choices.get(i));
+            gbc.gridx = i % 2;
+            gbc.gridy = 2 + i / 2;
+            gbc.gridheight = 1;
+            gbc.gridwidth = 2;
+            panel.add(button.button(), gbc);
         }
 
+        frame.getContentPane().add(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(900, 400);  // Adjust the size as needed
         frame.setVisible(true);
@@ -48,7 +56,6 @@ public class Client {
 
     private static ChoiceButton createButton(BasicChoice choice) {
         // Create a JButton
-        ChoiceButton result = new ChoiceButton( choice);
-        return result;
+        return new ChoiceButton(choice);
     }
 }

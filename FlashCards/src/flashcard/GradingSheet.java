@@ -1,14 +1,14 @@
 package flashcard;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GradingSheet {
-    Map<AbstractProblem, String> scorebook = new HashMap<>();
+    Map<AbstractProblem, Set<String>> scorebook = new HashMap<>();
 
-    public void record(AbstractProblem problem, String response) {
+    public void record(AbstractProblem problem) {
+        List<BasicChoice> choices = problem.choices();
+        Set<String> response = choices.stream().filter(c -> c.checked()).map(c -> c.label()).collect(Collectors.toSet());
         scorebook.put(problem, response);
     }
 
@@ -23,9 +23,9 @@ public class GradingSheet {
 
     private String incorrect() {
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<AbstractProblem, String> entry : scorebook.entrySet()) {
+        for (Map.Entry<AbstractProblem, Set<String>> entry : scorebook.entrySet()) {
             AbstractProblem problem = entry.getKey();
-            String response = entry.getValue();
+            Set<String> response = entry.getValue();
             if (Objects.equals(problem.answer(), response)) continue;
             sb.append(problem).append("\n");
             sb.append(problem.answer()).append("\n");
@@ -36,11 +36,11 @@ public class GradingSheet {
 
     public String details() {
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<AbstractProblem, String> entry : scorebook.entrySet()) {
+        for (Map.Entry<AbstractProblem, Set<String>> entry : scorebook.entrySet()) {
             AbstractProblem problem = entry.getKey();
             sb.append(problem).append("\n");
             sb.append(problem.answer()).append("\n");
-            String response = entry.getValue();
+            Set<String> response = entry.getValue();
             sb.append(String.format("You answered %s\n", response));
         }
         return sb.toString();
@@ -49,7 +49,7 @@ public class GradingSheet {
     private int getCorrectCount() {
         long total = scorebook.entrySet().stream().filter(entry -> {
             AbstractProblem problem = entry.getKey();
-            String response = entry.getValue();
+            Set<String> response = entry.getValue();
             return Objects.equals(problem.answer(), response);
         }).count();
 
@@ -59,7 +59,7 @@ public class GradingSheet {
     private int getTotal() {
         Optional<Integer> total = scorebook.entrySet().stream().map(entry -> {
             AbstractProblem problem = entry.getKey();
-            String response = entry.getValue();
+            Set<String> response = entry.getValue();
             return Objects.equals(problem.answer(), response) ? problem.score() : 0;
         }).reduce(Integer::sum);
 

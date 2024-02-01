@@ -33,4 +33,8 @@ public class BasicChoice {
     public String toString() {
         return this.label() + ".\t" + this.description();
     }
+
+    public boolean checked() {
+        return checked;
+    }
 }

@@ -1,9 +1,10 @@
 package flashcard;
 
 import java.util.List;
+import java.util.Set;
 
 public interface AbstractProblem {
-    String answer();
+    Set<String> answer();
 
     int score();
 
