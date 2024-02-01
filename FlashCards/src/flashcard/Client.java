@@ -11,7 +11,7 @@ public class Client {
 
         AbstractProblemBank bank = new JapaneseProblemBank();
         GradingSheet grade = new GradingSheet();
-        for (int i = 0; i < 3; ++i) {
+        for (int i = 0; i < 10; ++i) {
             AbstractProblem problem = bank.generate();
             System.out.println(problem);
             String choice = console.next();
