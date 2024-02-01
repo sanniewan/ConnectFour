@@ -8,19 +8,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class JapaneseProblemBank implements AbstractProblemBank {
 
+    private final String hiragana = "平仮名";
+    private final String katakana = "片仮名";
+
     public JapaneseProblemBank() {
         super();
         String[] resources = {"flashcard/japanese/resources/hiragana.txt", "flashcard/japanese/resources/katakana.txt"};
-
+        Map<Long, JapaneseAlphabet> alphabets = new HashMap<>();
         for (String res : resources) {
-            List<String> strings = loadResource(res);
-            System.out.println(strings);
+            for (String element : loadResource(res)) {
+                String[] frags = element.split("\t");
+                JapaneseAlphabet alphabet = new JapaneseAlphabet(Long.valueOf(frags[0]), frags[1], frags[2],
+                        frags[3]);
+                alphabets.put(alphabet.id, alphabet);
+            }
         }
+        System.out.println(alphabets);
     }
 
     private static List<String> loadResource(String resourceName) {
@@ -40,6 +50,7 @@ public class JapaneseProblemBank implements AbstractProblemBank {
     }
 
     public AbstractProblem generate() {
+
         return null;
     }
 }

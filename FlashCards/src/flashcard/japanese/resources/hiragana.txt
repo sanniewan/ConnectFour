@@ -1,44 +1,48 @@
-か ka 加
-き ki 幾
-く ku 久
-け ke 計
-こ ko 己
-さ sa 左
-し shi 之
-す su 寸
-せ se 世
-そ so 曽
-た ta 太
-ち chi 知
-つ tsu 川
-て te 天
-と to 止
-な na 奈
-に ni 仁
-ぬ nu 奴
-ね ne 祢
-の no 乃
-は ha 波
-ひ hi 比
-ふ hu 不
-へ he 部
-ほ ho 保
-ま ma 末
-み mi 美
-む mu 武
-め me 女
-も mo 毛
-や ya 也
-ゆ yu 由
-𛀁 ye 江
-よ yo 与
-ら ra 良
-り ri 利
-る ru 留
-れ re 礼
-ろ ro 呂
-わ wa 和
-ゐ wi 爲
-ゑ we 恵
-を wo 遠
-ん n 无
+1	ア	a	阿
+2	イ	i	伊
+3	ウ	u	宇
+4	エ	e	江
+5	オ	o	於
+6	カ	ka	加
+7	キ	ki	幾
+8	ク	ku	久
+9	ケ	ke	介
+10	コ	ko	己
+11	サ	sa	散
+12	シ	shi	之
+13	ス	su	須
+14	セ	se	世
+15	ソ	so	曽
+16	タ	ta	多
+17	チ	chi	千
+18	ツ	tsu	川
+19	テ	te	天
+20	ト	to	止
+21	ナ	na	奈
+22	ニ	ni	仁
+23	ヌ	nu	奴
+24	ネ	ne	祢
+25	ノ	no	乃
+26	ハ	ha	八
+27	ヒ	hi	比
+28	フ	hu	不
+29	ヘ	he	部
+30	ホ	ho	保
+31	マ	ma	末
+32	ミ	mi	三
+33	ム	mu	牟
+34	メ	me	女
+35	モ	mo	毛
+36	ヤ	ya	也
+38	ユ	yu	由
+40	ヨ	yo	與
+41	ラ	ra	良
+42	リ	ri	利
+43	ル	ru	流
+44	レ	re	礼
+45	ロ	ro	呂
+46	ワ	wa	和
+47	ヰ	i	井
+48	ヱ	e	恵
+49	ヲ	wo	乎
+50	ン	n	尓

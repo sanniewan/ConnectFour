@@ -1,48 +1,49 @@
-ア a 阿
-イ i 伊
-ウ u 宇
-エ e 江
-オ o 於
-カ ka 加
-キ ki 幾
-ク ku 久
-ケ ke 介
-コ ko 己
-サ sa 散
-シ shi 之
-ス su 須
-セ se 世
-ソ so 曽
-タ ta 多
-チ chi 千
-ツ tsu 川
-テ te 天
-ト to 止
-ナ na 奈
-ニ ni 仁
-ヌ nu 奴
-ネ ne 祢
-ノ no 乃
-ハ ha 八
-ヒ hi 比
-フ hu 不
-ヘ he 部
-ホ ho 保
-マ ma 末
-ミ mi 三
-ム mu 牟
-メ me 女
-モ mo 毛
-ヤ ya 也
-ユ yu 由
-ヨ yo 與
-ラ ra 良
-リ ri 利
-ル ru 流
-レ re 礼
-ロ ro 呂
-ワ wa 和
-ヰ i 井
-ヱ e 恵
-ヲ wo 乎
-ン n 尓
+51	あ	a	安
+52	い	i	以
+53	う	u	宇
+54	え	e	衣
+55	お	o	於
+56	か	ka	加
+57	き	ki	幾
+58	く	ku	久
+59	け	ke	計
+60	こ	ko	己
+61	さ	sa	左
+62	し	shi	之
+63	す	su	寸
+64	せ	se	世
+65	そ	so	曽
+66	た	ta	太
+67	ち	chi	知
+68	つ	tsu	川
+69	て	te	天
+70	と	to	止
+71	な	na	奈
+72	に	ni	仁
+73	ぬ	nu	奴
+74	ね	ne	祢
+75	の	no	乃
+76	は	ha	波
+77	ひ	hi	比
+78	ふ	hu	不
+79	へ	he	部
+80	ほ	ho	保
+81	ま	ma	末
+82	み	mi	美
+83	む	mu	武
+84	め	me	女
+85	も	mo	毛
+86	や	ya	也
+88	ゆ	yu	由
+89	𛀁	ye	江
+90	よ	yo	与
+91	ら	ra	良
+92	り	ri	利
+93	る	ru	留
+94	れ	re	礼
+95	ろ	ro	呂
+96	わ	wa	和
+97	ゐ	wi	爲
+98	ゑ	we	恵
+99	を	wo	遠
+100	ん	n	无
