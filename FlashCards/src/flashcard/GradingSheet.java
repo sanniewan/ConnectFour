@@ -17,7 +17,21 @@ public class GradingSheet {
         return String.format("Total Score %d", getTotal()) + "\n" +
                 String.format("Total problems %d", scorebook.size()) + "\n" +
                 String.format("Correct %d", getCorrectCount()) + "\n" +
-                String.format("Incorrect %d", scorebook.size() - getCorrectCount()) + "\n";
+                String.format("Incorrect %d", scorebook.size() - getCorrectCount()) + "\n" +
+                incorrect();
+    }
+
+    private String incorrect() {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<AbstractProblem, String> entry : scorebook.entrySet()) {
+            AbstractProblem problem = entry.getKey();
+            String response = entry.getValue();
+            if (Objects.equals(problem.answer(), response)) continue;
+            sb.append(problem).append("\n");
+            sb.append(problem.answer()).append("\n");
+            sb.append(String.format("You answered %s\n", response));
+        }
+        return sb.toString();
     }
 
     public String details() {
@@ -26,6 +40,8 @@ public class GradingSheet {
             AbstractProblem problem = entry.getKey();
             sb.append(problem).append("\n");
             sb.append(problem.answer()).append("\n");
+            String response = entry.getValue();
+            sb.append(String.format("You answered %s\n", response));
         }
         return sb.toString();
     }

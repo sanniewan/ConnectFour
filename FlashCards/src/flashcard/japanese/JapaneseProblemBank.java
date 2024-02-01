@@ -114,7 +114,7 @@ public class JapaneseProblemBank implements AbstractProblemBank {
 
         List<BasicChoice> result = new ArrayList<>();
         for (int i = 0; i < parts.size(); ++i) {
-            String label = String.format("%c", (char) ('A' + i));
+            String label = String.format("%c", (char) ('a' + i));
             String description = parts.get(i);
             result.add(new BasicChoice(label, description, Objects.equals(description, correct)));
         }
