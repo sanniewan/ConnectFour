@@ -22,6 +22,7 @@ public class Client {
             }
         }
         System.out.println("Done!");
+        System.exit(0);
     }
 
     private static void presentTerminate() {
