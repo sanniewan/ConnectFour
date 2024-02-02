@@ -9,7 +9,7 @@ import java.util.List;
 public class Client {
     private static boolean buttonClicked = false;
     private static boolean exit = false;
-    private static int testSize = 1;
+    private static int testSize = 10;
 
     public static void main(String[] args) {
 
