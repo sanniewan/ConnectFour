@@ -148,8 +148,7 @@ public class Client {
         buttonClicked = false;
         JFrame frame = new JFrame("Test on ...");
         JPanel panel = new JPanel(new GridBagLayout());
-
-        JLabel label = new JLabel(String.format("%d. %s", problemNumber, problem.prompt()));
+        JLabel label = new JLabel(String.format("%d. %s (score %d)", problemNumber, problem.prompt(), problem.score()));
         label.setFont(new Font("Arial", Font.BOLD, 20));
 
         List<BasicChoice> choices = problem.choices();
@@ -161,9 +160,6 @@ public class Client {
         gbc.gridy = 0;
         gbc.gridheight = 2;
         panel.add(label, gbc);
-        JButton submitButton = getBlockingButton("Submit");
-        gbc.gridx = 1;
-        panel.add(submitButton, gbc);
 
         for (int i = 0; i < choices.size(); ++i) {
             ChoiceButton button = createButton(choices.get(i));
@@ -173,6 +169,11 @@ public class Client {
             gbc.gridwidth = 2;
             panel.add(button.button(), gbc);
         }
+        JButton submitButton = getBlockingButton("Submit");
+        submitButton.setFont(new Font("Arial", Font.BOLD, 20));
+        gbc.gridx = choices.size() % 2;
+        gbc.gridy = 2 + choices.size() / 2;
+        panel.add(submitButton, gbc);
 
         frame.getContentPane().add(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
