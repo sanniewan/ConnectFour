@@ -4,7 +4,7 @@ public class BasicChoice {
     private final String label;
     private final String description;
     private final boolean correctChoice;
-    private boolean checked;
+    private boolean checked = false;
 
     public BasicChoice(String label, String description, boolean correctChoice) {
 
@@ -15,6 +15,9 @@ public class BasicChoice {
 
     public void check() {
         this.checked = true;
+    }
+    public void uncheck() {
+        this.checked = false;
     }
 
     public String label() {

@@ -16,8 +16,15 @@ public class ChoiceButton {
 
         // Add an ActionListener to the button
         button.addActionListener(e -> {
-            choice.check();
-            button.setBackground(Color.BLUE);
+            if (choice.checked()) {
+                choice.uncheck();
+                button.setForeground(UIManager.getColor("Button.foreground")); // Reset to default color
+                System.out.println("Unchecked color");
+            } else {
+                choice.check();
+                button.setForeground(Color.RED);
+                System.out.println("Checked color");
+            }
         });
     }
 

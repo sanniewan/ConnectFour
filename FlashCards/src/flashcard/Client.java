@@ -8,12 +8,51 @@ import java.util.List;
 
 public class Client {
     private static boolean buttonClicked = false;
+    private static boolean exit = false;
+    private static int testSize = 1;
 
     public static void main(String[] args) {
 
         AbstractProblemBank bank = new JapaneseProblemBank(4);
+        while (true) {
+            examination(bank);
+            presentTerminate();
+            if (exit) {
+                break;
+            }
+        }
+        System.out.println("Done!");
+    }
+
+    private static void presentTerminate() {
+        buttonClicked = false;
+        JButton continueButton = getBlockingButton("Continue");
+        continueButton.addActionListener(e -> exit = false);
+
+        JButton exitButton = getBlockingButton("Exit");
+        exitButton.addActionListener(e -> exit = true);
+
+        JFrame frame = new JFrame("Grades");
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(continueButton, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        panel.add(exitButton, gbc);
+
+        frame.getContentPane().add(panel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(900, 1400);  // Adjust the size as needed
+        frame.setVisible(true);
+        waitForButtonClick();
+    }
+
+    private static void examination(AbstractProblemBank bank) {
         GradingSheet grade = new GradingSheet();
-        for (int i = 0; i < 3; ++i) {
+        for (int i = 0; i < testSize; ++i) {
             AbstractProblem problem = bank.generate();
             int problemNumber = i + 1;
             System.out.printf("%d. ", problemNumber);
@@ -79,17 +118,24 @@ public class Client {
         frame.getContentPane().add(panel);
         frame.setSize(900, 1400);  // Adjust the size as needed
 
-        JButton submitButton = new JButton("Confirm");
-        submitButton.addActionListener(e -> {
+        JButton submitButton = getBlockingButton("Confirm");
+        gbc.gridy = 2;
+        panel.add(submitButton, gbc);
+        frame.setVisible(true);
+        waitForButtonClick();
+    }
+
+    private static JButton getBlockingButton(String name) {
+        Font customFont = new Font("Arial", Font.PLAIN, 20);
+        JButton button = new JButton(name);
+        button.setFont(customFont);
+        button.addActionListener(e -> {
             synchronized (Client.class) {
                 buttonClicked = true;
                 Client.class.notifyAll();
             }
         });
-        gbc.gridy = 2;
-        panel.add(submitButton, gbc);
-        frame.setVisible(true);
-        waitForButtonClick();
+        return button;
     }
 
     private static void present(int problemNumber, AbstractProblem problem) {
@@ -109,13 +155,7 @@ public class Client {
         gbc.gridy = 0;
         gbc.gridheight = 2;
         panel.add(label, gbc);
-        JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(e -> {
-            synchronized (Client.class) {
-                buttonClicked = true;
-                Client.class.notifyAll();
-            }
-        });
+        JButton submitButton = getBlockingButton("Submit");
         gbc.gridx = 1;
         panel.add(submitButton, gbc);
 
