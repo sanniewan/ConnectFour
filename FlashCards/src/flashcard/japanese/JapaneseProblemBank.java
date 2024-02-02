@@ -35,7 +35,6 @@ public class JapaneseProblemBank implements AbstractProblemBank {
             }
         }
 
-        System.out.println(alphabets);
         this.choiceSize = distractors + 1;
     }
 
@@ -50,7 +49,7 @@ public class JapaneseProblemBank implements AbstractProblemBank {
                 throw new RuntimeException(e);
             }
         } else {
-            System.out.println("Resource not found!");
+            System.err.println("Resource not found!");
         }
         return Collections.emptyList();
     }
