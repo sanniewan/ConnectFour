@@ -11,22 +11,89 @@ public class Client {
 
     public static void main(String[] args) {
 
-        AbstractProblemBank bank = new JapaneseProblemBank(5);
+        AbstractProblemBank bank = new JapaneseProblemBank(4);
         GradingSheet grade = new GradingSheet();
-        for (int i = 0; i < 10; ++i) {
-            buttonClicked = false;
+        for (int i = 0; i < 3; ++i) {
             AbstractProblem problem = bank.generate();
             int problemNumber = i + 1;
             System.out.printf("%d. ", problemNumber);
             System.out.println(problem);
-            present(problemNumber, problem);
-            waitForButtonClick();
             grade.record(problem);
+            present(problemNumber, problem);
         }
+        present(grade);
         System.out.println(grade);
     }
 
+    private static void present(GradingSheet grade) {
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 10;
+
+        String summaryHtml = String.format("<html>%s</html>", grade.summary().replace("\n", "<br>"));
+        JLabel summary = new JLabel(summaryHtml);
+        summary.setFont(new Font("Arial", Font.BOLD, 20));
+        panel.add(summary, gbc);
+
+        JFrame frame1 = new JFrame("Grades");
+        frame1.getContentPane().add(panel);
+        frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame1.setSize(900, 1400);  // Adjust the size as needed
+        frame1.setVisible(true);
+
+        for (String incorrect : grade.incorrect()) {
+            displayIncorrect(summaryHtml, incorrect);
+        }
+    }
+
+    private static void displayIncorrect(String summaryHtml, String incorrect) {
+        buttonClicked = false;
+        JFrame frame = new JFrame("Grades");
+        JPanel panel = new JPanel(new GridBagLayout());
+        frame.getContentPane().add(panel);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 10;
+
+        JLabel summary = new JLabel(summaryHtml);
+        summary.setFont(new Font("Arial", Font.BOLD, 20));
+        panel.add(summary, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 10;
+
+        String incorrectHtml = String.format("<html>%s</html>", incorrect.replace("\n",
+                "<br>"));
+        JLabel incorrectLabel = new JLabel(incorrectHtml);
+        incorrectLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        panel.add(incorrectLabel, gbc);
+        frame.getContentPane().add(panel);
+        frame.setSize(900, 1400);  // Adjust the size as needed
+
+        JButton submitButton = new JButton("Confirm");
+        submitButton.addActionListener(e -> {
+            synchronized (Client.class) {
+                buttonClicked = true;
+                Client.class.notifyAll();
+            }
+        });
+        gbc.gridy = 2;
+        panel.add(submitButton, gbc);
+        frame.setVisible(true);
+        waitForButtonClick();
+    }
+
     private static void present(int problemNumber, AbstractProblem problem) {
+        buttonClicked = false;
         JFrame frame = new JFrame("Test on ...");
         JPanel panel = new JPanel(new GridBagLayout());
 
@@ -63,8 +130,9 @@ public class Client {
 
         frame.getContentPane().add(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(900, 400);  // Adjust the size as needed
+        frame.setSize(900, 1400);  // Adjust the size as needed
         frame.setVisible(true);
+        waitForButtonClick();
     }
 
     private static ChoiceButton createButton(BasicChoice choice) {
