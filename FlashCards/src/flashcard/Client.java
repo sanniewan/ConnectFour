@@ -88,6 +88,11 @@ public class Client {
         for (String incorrect : grade.incorrect()) {
             displayIncorrect(summaryHtml, incorrect);
         }
+        buttonClicked = false;
+        JButton submitButton = getBlockingButton("Confirm");
+        gbc.gridy = 2;
+        panel.add(submitButton, gbc);
+        waitForButtonClick();
     }
 
     private static void displayIncorrect(String summaryHtml, String incorrect) {
